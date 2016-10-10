@@ -2,7 +2,7 @@
 // get all the tools that we need
 var express = require('express'),
 	app = express(),
-	port = process.env.PORT || 2337;
+	port = Number(process.env.PORT || 2337);
 
 var	mongoose = require('mongoose'),
 	passport = require('passport'),
