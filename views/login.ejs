@@ -1,0 +1,23 @@
+
+<div class="container">
+ <div class="col-sm-6 col-sm-offset-3">
+  <h1><span class="fa fa-sign-in"></span> Login</h1>
+
+  <!-- show any messages that come with the authentication -->
+  <% include partials/messages %>
+
+  <!-- LOGIN FORM -->
+  <form method="POST">
+
+   <% include partials/form %>
+
+   <button type="button" class="btn btn-warning btn-lg" id="login" onclick="loginProfile()">Login</button>
+ </form>
+
+ <hr>
+
+ <p>Need an account? <a href="#" onclick="getSignupForm()">Signup</a></p>
+ <p>Or go <a href="#" onclick="gethome()">home</a>.</p>
+</div>
+</div>
+<script type="text/javascript" src = "js/script.js"></script>
