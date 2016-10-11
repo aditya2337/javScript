@@ -3,7 +3,6 @@ var ajaxCall = function() {
     a : new Custom.Ajax.Net.Request(),
     b : new Custom.Ajax.Net.PageRequests(),
     c : new Custom.Ajax.Net.Connection(),
-    button : null,
 
     ajaxCallback : function(src) {
       if ( src.ReadyState == 4) {
@@ -23,6 +22,8 @@ var ajaxCall = function() {
     }
   }
 }
+
+
 
 function getLoginForm() {
   var loginForm = new ajaxCall();
@@ -53,20 +54,26 @@ function loginProfile() {
 }
 
 function signUp() {
+  var fname = document.getElementById('fname');
+  var lname = document.getElementById('lname');
   var email = document.getElementById('email');
   var password = document.getElementById('password');
+  var cpassword = document.getElementById('cpassword');
   var login = new ajaxCall();
   login.a.URL = "/signup";
   login.setArgs();
   login.a.Method = "POST";
+  login.a.AddParam("fname", fname.value);
+  login.a.AddParam("lname", lname.value);
   login.a.AddParam("email", email.value);
   login.a.AddParam("password", password.value);
+  login.a.AddParam("cpassword", cpassword.value);
   return login.c.Open();
 }
 
 function gethome() {
   var home = new ajaxCall();
-  home.a.URL = "/";
+  home.a.URL = "/home";
   home.setArgs();
   home.c.Open();
 }

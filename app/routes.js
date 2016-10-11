@@ -1,12 +1,31 @@
 module.exports = function( app, passport) {
+	
 	// Home page with login links
 	app.get( '/', function( req, res) {
+		if ( req.isAuthenticated()) {
+			res.render( 'mainProfile.ejs', {
+				user : req.user // get the user out of session and pass to template
+			});
+		}
 		res.render('index.ejs'); // load the index.ejs file
+	});
+
+	app.get( '/home', function( req, res) {
+		if ( req.isAuthenticated()) {
+			res.render( 'profile.ejs', {
+				user : req.user // get the user out of session and pass to template
+			});
+		}
+		res.render('home.ejs'); // load the index.ejs file
 	});
 
 	// Login form
 	app.get('/login', function( req, res) {
-
+		if ( req.isAuthenticated()) {
+			res.render( 'profile.ejs', {
+				user : req.user // get the user out of session and pass to template
+			});
+		}
 		// render the page and pass in any flash data if it exists
 		res.render( 'login.ejs', { message: req.flash('loginMessage')});
 	});
@@ -21,6 +40,11 @@ module.exports = function( app, passport) {
 	// signup form
 	app.get( '/signup', function( req, res) {
 
+		if ( req.isAuthenticated()) {
+			res.render( 'profile.ejs', {
+				user : req.user // get the user out of session and pass to template
+			});
+		}
 		// render the page and pass in any flash data if it exists
 		res.render( 'signup.ejs', { message: req.flash('signupMessage')});
 	});
@@ -46,7 +70,7 @@ module.exports = function( app, passport) {
 
 	app.get( '/logout', function( req, res) {
 		req.logout();
-		res.redirect('/');
+		res.redirect('/home');
 	});
 };
 

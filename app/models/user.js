@@ -5,6 +5,8 @@ var mongoose = require('mongoose'),
 	// define schema for our model
 var	userSchema = mongoose.Schema({
 	local 	  	 : {
+    fname    : String,
+    lname    : String,
 		email 	 : String,
 		password : String,
 	}

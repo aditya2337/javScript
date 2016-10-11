@@ -1,4 +1,3 @@
-
 <div class="container">
 	<div class="col-sm-6 col-sm-offset-3">
 		<h1><span class="fa fa-sign-in"></span> Signup</h1>
@@ -8,7 +7,31 @@
 
 		<!-- SIGNUP FORM -->
 		<form  method="POST">
-			<% include partials/form %>
+
+			<div class="form-group">
+				<label>First Name</label>
+				<input type="text" id="fname" class="form-control" name="fname">
+			</div>
+
+			<div class="form-group">
+				<label>Last Name</label>
+				<input type="text" id="lname" class="form-control" name="lname">
+			</div>
+
+			<div class="form-group">
+				<label>Email</label>
+				<input type="text" id="email" class="form-control" name="email">
+			</div>
+
+			<div class="form-group">
+				<label>Password</label>
+				<input type="password" id="password" class="form-control" name="password">
+			</div>
+
+			<div class="form-group">
+				<label>Confirm password</label>
+				<input type="password" id="cpassword" class="form-control" name="cpassword">
+			</div>
 
 			<button type="button" class="btn btn-warning btn-lg" onclick="signUp()">Signup</button>
 

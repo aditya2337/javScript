@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<% include partials/header %>
-	<style type="text/css">
-		word-wrap:break-word;
-	</style>
-</head>
-<body>
 <div class="container">
 	<div class="page-header text-center">
 		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
@@ -21,7 +12,7 @@
 				<h3><span class ="fa fa-user"></span> User</h3>
 
 				<p>
-					<strong>id</strong>: <%= user._id %><br>
+					<strong>Name</strong>: <%= user.local.fname %> <%= user.local.lname %><br>
 					<strong>email</strong>: <%= user.local.email %><br>
 					<strong>password</strong>: <%= user.local.password %>
 				</p>
@@ -30,5 +21,4 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
+<script type="text/javascript" src = "js/script.js"></script>
