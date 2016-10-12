@@ -44,17 +44,23 @@ module.exports = function( passport) {
 				// if there are any errors, return the error
 				if (err)
 					return err;
+        
+        var fname = req.body.fname;
+        var lname = req.body.lname;
+        var cpassword = req.body.cpassword;
 
 				// check to see if theres already a user with that email
 				if ( user) {
 					return done( null, false, req.flash( 'signupMessage', 'That email is already taken '));
-				} else {
+				} else if( cpassword != password){ 
+          return done( null, false, req.flash( 'signupMessage', 'Oops! the passwords don\'t match '));
+        } else if ( !validateEmail( email)){
+          return done( null, false, req.flash( 'signupMessage', 'The email submitted is not a valid one! '));
+        } else {
 
 					// if there is no user with that email
           // create the user
           var newUser = new User();
-          var fname = req.body.fname;
-          var lname = req.body.lname;
 
           // set the user's local credentials
           newUser.local.fname = fname;
@@ -104,3 +110,9 @@ module.exports = function( passport) {
     });
   }));
 };
+
+// Check to see if the email is valid, using a regular expression.
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}

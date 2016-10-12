@@ -2,6 +2,8 @@ module.exports = function( app, passport) {
 	
 	// Home page with login links
 	app.get( '/', function( req, res) {
+		
+		// check to see if the user is already logged in
 		if ( req.isAuthenticated()) {
 			res.render( 'mainProfile.ejs', {
 				user : req.user // get the user out of session and pass to template
@@ -12,6 +14,8 @@ module.exports = function( app, passport) {
 	});
 
 	app.get( '/home', function( req, res) {
+
+		// check to see if the user is already logged in
 		if ( req.isAuthenticated()) {
 			res.render( 'profile.ejs', {
 				user : req.user // get the user out of session and pass to template
@@ -22,6 +26,8 @@ module.exports = function( app, passport) {
 
 	// Login form
 	app.get('/login', function( req, res) {
+
+		// check to see if the user is already logged in
 		if ( req.isAuthenticated()) {
 			res.render( 'profile.ejs', {
 				user : req.user // get the user out of session and pass to template
@@ -41,6 +47,7 @@ module.exports = function( app, passport) {
 	// signup form
 	app.get( '/signup', function( req, res) {
 
+		// check to see if the user is already logged in
 		if ( req.isAuthenticated()) {
 			res.render( 'profile.ejs', {
 				user : req.user // get the user out of session and pass to template
