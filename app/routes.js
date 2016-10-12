@@ -6,8 +6,9 @@ module.exports = function( app, passport) {
 			res.render( 'mainProfile.ejs', {
 				user : req.user // get the user out of session and pass to template
 			});
+		} else {
+			res.render('index.ejs'); // load the index.ejs file
 		}
-		res.render('index.ejs'); // load the index.ejs file
 	});
 
 	app.get( '/home', function( req, res) {
