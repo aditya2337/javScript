@@ -1,6 +1,7 @@
 {
   "name": "login-authentication",
   "main": "server.js",
+  "version": "1.0.0",
   "engines": {
     "node": "6.4.0"
   },
