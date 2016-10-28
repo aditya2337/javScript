@@ -33,6 +33,16 @@
 				<input type="password" id="cpassword" class="form-control" name="cpassword">
 			</div>
 
+			<div class="form-group">
+			<label>Captcha</label><br>
+				<img id="captchaRefresh" data-url="/captcha" alt="captcha" src="/captcha" >
+				<button type="button" class="fa fa-refresh btn btn-default" title="click to refresh" aria-hidden="true" onclick = "refresh()"></button>
+			</div>
+
+			<div class="form-group">
+				<input type="text" id="captcha" class="form-control" placeholder="input captcha" name="captcha">
+			</div>
+
 			<button type="button" class="btn btn-warning btn-lg" onclick="signUp()">Signup</button>
 
 			<hr>

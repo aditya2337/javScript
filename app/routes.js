@@ -1,8 +1,15 @@
 module.exports = function( app, passport) {
-	
+
+	var captcha = require('../Captcha.js'),
+  	captchaOptions = {
+
+  };
+
+  var user = require('../app/models/user'); //i get the address of user model in the link you give, but in general it should be the user model address.
+
 	// Home page with login links
 	app.get( '/', function( req, res) {
-		
+
 		// check to see if the user is already logged in
 		if ( req.isAuthenticated()) {
 			res.render( 'mainProfile.ejs', {
@@ -37,7 +44,7 @@ module.exports = function( app, passport) {
 		res.render( 'login.ejs', { message: req.flash('loginMessage')});
 	});
 
-	// process the login form 
+	// process the login form
 	app.post( '/login', passport.authenticate( 'local-login', {
 		successRedirect : '/profile', // redirect to the secure profile section
 		failureRedirect : '/login', // redirect back to the signup page if there is an error
@@ -79,6 +86,51 @@ module.exports = function( app, passport) {
 	app.get( '/logout', function( req, res) {
 		req.logout();
 		res.redirect('/home');
+	});
+
+	app.get( '/edit', function( req, res) {
+		res.render( 'editProfile.ejs', { user : req.user , message : req.flash('signupMessage')});
+	});
+
+	app.get('/captcha', function(req, res) {
+		captcha(captchaOptions, function(err, data) {
+			if(err) {
+				res.send(err)
+			}
+			else {
+				req.session.captcha = data.captchaStr
+				res.end(data.captchaImg)
+			}
+		});
+	});
+
+	app.post( '/update', isLoggedIn, function(req, res) {
+		user.findOne( {'local.email' : req.body.email},  function( err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).send();
+			} else {
+				if ( !docs) {
+					res.status(404).send();
+				} else {
+					if ( req.body.fname)
+						docs.local.fname = req.body.fname;
+
+					if( req.body.lname)
+						docs.local.lname = req.body.lname;
+
+					docs.save( function( err, updatedObject) {
+						if( err) {
+							console.log(err);
+							res.status(500).send();
+						} else {
+							res.redirect('/profile');
+						}
+					})
+				}
+			}
+			console.log(docs);
+		})
 	});
 };
 

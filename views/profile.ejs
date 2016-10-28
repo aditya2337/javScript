@@ -1,22 +1,30 @@
 <div class="container">
-	<div class="page-header text-center">
+	<div class="text-center">
 		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
 		<a href="#" onclick="logOut()" class="btn btn-default btn-sm"> Logout</a>
 	</div>
 
+	<ul class="nav nav-tabs">
+    <li id = "home" class="active"><a data-toggle="tab" href="#home" onclick="profile('home')">Home</a></li>
+    <li id="edit"><a data-toggle="tab" href="#edit" onclick="editDetails('edit')">Edit</a></li>
+    <li id="activity"><a data-toggle="tab" href="#activity" onclick="changeTab('activity')">Activity</a></li>
+  </ul>
+
 	<div class="row">
 		
-		<!-- INFORMATION -->
-		<div class="col-sm-6">
-			<div class="well">
-				<h3><span class ="fa fa-user"></span> User</h3>
+		<div class="tab-content" id="tabs">
+			<!-- INFORMATION -->
+			<div class="col-sm-6 tab-pane fade in active">
+				<div >
+					<h3><span class ="fa fa-user"></span> User</h3>
 
-				<p>
-					<strong>Name</strong>: <%= user.local.fname %> <%= user.local.lname %><br>
-					<strong>email</strong>: <%= user.local.email %><br>
-					<strong>password</strong>: <%= user.local.password %>
-				</p>
+					<p>
+						<strong>Name</strong>: <%= user.local.fname %> <%= user.local.lname %><br>
+						<strong>email</strong>: <%= user.local.email %><br>
+						<strong>password</strong>: <%= user.local.password %>
+					</p>
 
+				</div>
 			</div>
 		</div>
 	</div>

@@ -56,6 +56,8 @@ module.exports = function( passport) {
           return done( null, false, req.flash( 'signupMessage', 'Oops! the passwords don\'t match '));
         } else if ( !validateEmail( email)){
           return done( null, false, req.flash( 'signupMessage', 'The email submitted is not a valid one! '));
+        } else if ( req.session && req.session.captcha && req.body.captcha && req.session.captcha.toLowerCase() !== req.body.captcha.toLowerCase()){
+          return done( null, false, req.flash( 'signupMessage', 'The captcha is wrong, Please try again! '));
         } else {
 
 					// if there is no user with that email
@@ -107,6 +109,34 @@ module.exports = function( passport) {
 
       // all is well, return successful user
       return done( null, user);
+    });
+  }));
+
+  passport.use( 'local-update', new LocalStrategy({
+    // by default, local strategy uses username and password, we will replace it with email
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true // allows us to pass the entire request to the callback
+  },
+  function( req, email, password, done) {
+    // asynchronous
+    // User.findOne wont fire unless data is sent back
+    process.nextTick( function() {
+
+      var fname = req.body.fname;
+      var lname = req.body.lname;
+
+      // find a user whose email is the same as the forms email
+
+      User.update( {_id: req.body.userid}, {
+        'local.fname': req.body.fname
+      }, function( err, numberAffected, rawResponse) {
+        if (err) 
+          return done( null, false, req.flash( 'updateMessage', err));
+
+        console.log(req.session.passport.user); 
+        return done( null, user);
+      }); 
     });
   }));
 };
