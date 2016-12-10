@@ -189,6 +189,30 @@ function editDetails( id) {
   changeTab(id);
 }
 
+function addActivity( id) {
+
+  var editDetails = new ajaxCall();
+  editDetails.a.URL = "/activity";
+  editDetails.setArgs();
+
+  editDetails.customCallback = function( src) {
+
+    if ( src.ReadyState == 4) {
+      if ( src.Status == 200) {
+        // replace the body elements with ajax response
+        var El = document.getElementById('tabs');
+        El.innerHTML = src.ResponseText;
+      }
+    }
+  }
+
+  editDetails.a.Callback = editDetails.customCallback;
+
+  // opens up the ajax connection
+  editDetails.c.Open();
+  changeTab(id);
+}
+
 function changeTab( id) {
 
   var edit = document.getElementById(id);
@@ -200,7 +224,20 @@ function changeTab( id) {
       removeClass(li[i], "active");
     }
   }
-  addClass(edit, 'active');  
+  addClass(edit, 'active');
+}
+
+function changeTodoTab( id) {
+  var li = document.getElementsByTagName('div')[6]['children'][0]['children'];
+  var n = li.length;
+  var edit = document.getElementById(id);
+
+  for (var i = 0; i < n; i++) {
+    if( hasClass(li[i], "active")) {
+      removeClass(li[i], "active");
+    }
+  }
+  addClass(edit, 'active');
 }
 
 function update( userid) {
@@ -220,4 +257,148 @@ function update( userid) {
   update.a.AddParam("email", email.value);
   // opens up the ajax connection
   update.c.Open();
+}
+
+function saveTodo() {
+  // console.log(fname);
+
+  var saveToList = new ajaxCall();
+  var name = document.getElementById('todo-name');
+  saveToList.a.URL = "/activity";
+  saveToList.setArgs();
+
+  // set the ajax method to POST
+  saveToList.a.Method = "POST";
+
+  // set the post data to ajax request
+  saveToList.a.AddParam("name", name.value);
+
+  saveToList.customCallback = function( src) {
+
+    if ( src.ReadyState == 4) {
+      if ( src.Status == 200) {
+        // replace the body elements with ajax response
+        var El = document.getElementById('activityTabs');
+        El.innerHTML = src.ResponseText;
+      }
+    }
+  }
+
+  saveToList.a.Callback = saveToList.customCallback;
+
+  // opens up the ajax connection
+  saveToList.c.Open();
+}
+
+function delTodo( doneId) {
+  // console.log(fname);
+
+  var delTodoList = new ajaxCall();
+  delTodoList.a.URL = "/del/" + doneId;
+  delTodoList.setArgs();
+  // set the ajax method to DELETE
+  delTodoList.a.Method = "POST";
+
+  delTodoList.customCallback = function( src) {
+
+    if ( src.ReadyState == 4) {
+      if ( src.Status == 200) {
+        // replace the body elements with ajax response
+        var El = document.getElementById('activityTabs');
+        El.innerHTML = src.ResponseText;
+      }
+    }
+  }
+
+  delTodoList.a.Callback = delTodoList.customCallback;
+
+  // opens up the ajax connection
+  delTodoList.c.Open();
+}
+
+function markCompleted( doneId) {
+  // console.log(fname);
+
+  var completed = document.getElementById('completed').value;
+  var markDone = new ajaxCall();
+  markDone.a.URL = "/done/" + doneId;
+  markDone.setArgs();
+
+  // set the ajax method to DELETE
+  markDone.a.Method = "POST";
+
+  // set the post data to ajax request
+  markDone.a.AddParam("completed", completed);
+
+  markDone.customCallback = function( src) {
+
+    if ( src.ReadyState == 4) {
+      if ( src.Status == 200) {
+        // replace the body elements with ajax response
+        var El = document.getElementById('activityTabs');
+        El.innerHTML = src.ResponseText;
+      }
+    }
+  }
+
+  markDone.a.Callback = markDone.customCallback;
+
+  // opens up the ajax connection
+  markDone.c.Open();
+}
+
+function showCompleted( id) {
+  // console.log(fname);
+
+  var saveToList = new ajaxCall();
+  saveToList.a.URL = "/completed";
+  saveToList.setArgs();
+
+  // set the ajax method to GET
+  saveToList.a.Method = "GET";
+
+  saveToList.customCallback = function( src) {
+
+    if ( src.ReadyState == 4) {
+      if ( src.Status == 200) {
+        // replace the body elements with ajax response
+        var El = document.getElementById('activityTabs');
+        El.innerHTML = src.ResponseText;
+      }
+    }
+  }
+
+  saveToList.a.Callback = saveToList.customCallback;
+
+  // opens up the ajax connection
+  saveToList.c.Open();
+  changeTodoTab(id);
+}
+
+function showActivity( id) {
+  // console.log(fname);
+
+  var saveToList = new ajaxCall();
+  saveToList.a.URL = "/actWindow";
+  saveToList.setArgs();
+
+  // set the ajax method to GET
+  saveToList.a.Method = "GET";
+
+  saveToList.customCallback = function( src) {
+
+    if ( src.ReadyState == 4) {
+      if ( src.Status == 200) {
+        // replace the body elements with ajax response
+        var El = document.getElementById('activityTabs');
+        El.innerHTML = src.ResponseText;
+      }
+    }
+  }
+
+  saveToList.a.Callback = saveToList.customCallback;
+
+  // opens up the ajax connection
+  saveToList.c.Open();
+  changeTodoTab(id);
 }

@@ -9,6 +9,12 @@ var	userSchema = mongoose.Schema({
     lname    : String,
 		email 	 : String,
 		password : String,
+		activity   : {
+			name     : String,
+			createTime : Date,
+			completed : Boolean,
+			completeTime : Date
+		}
 	}
 });
 

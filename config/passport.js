@@ -15,7 +15,7 @@ module.exports = function( passport) {
 		done( null, user.id);
 	});
 
-	// used to deserialize user 
+	// used to deserialize user
 	passport.deserializeUser( function( id, done) {
 		User.findById( id, function( err, user) {
 			done( err, user);
@@ -44,7 +44,7 @@ module.exports = function( passport) {
 				// if there are any errors, return the error
 				if (err)
 					return err;
-        
+
         var fname = req.body.fname;
         var lname = req.body.lname;
         var cpassword = req.body.cpassword;
@@ -52,7 +52,7 @@ module.exports = function( passport) {
 				// check to see if theres already a user with that email
 				if ( user) {
 					return done( null, false, req.flash( 'signupMessage', 'That email is already taken '));
-				} else if( cpassword != password){ 
+				} else if( cpassword != password){
           return done( null, false, req.flash( 'signupMessage', 'Oops! the passwords don\'t match '));
         } else if ( !validateEmail( email)){
           return done( null, false, req.flash( 'signupMessage', 'The email submitted is not a valid one! '));
@@ -131,12 +131,12 @@ module.exports = function( passport) {
       User.update( {_id: req.body.userid}, {
         'local.fname': req.body.fname
       }, function( err, numberAffected, rawResponse) {
-        if (err) 
+        if (err)
           return done( null, false, req.flash( 'updateMessage', err));
 
-        console.log(req.session.passport.user); 
+        console.log(req.session.passport.user);
         return done( null, user);
-      }); 
+      });
     });
   }));
 };

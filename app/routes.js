@@ -5,7 +5,8 @@ module.exports = function( app, passport) {
 
   };
 
-  var user = require('../app/models/user'); //i get the address of user model in the link you give, but in general it should be the user model address.
+	var user = require('../app/models/user'); //i get the address of user model in the link you give, but in general it should be the user model address.
+  var todoActivity = require('../app/models/activity'); //i get the address of user model in the link you give, but in general it should be the user model address.
 
 	// Home page with login links
 	app.get( '/', function( req, res) {
@@ -126,12 +127,93 @@ module.exports = function( app, passport) {
 						} else {
 							res.redirect('/profile');
 						}
-					})
+					});
 				}
 			}
-			console.log(docs);
+		});
+	});
+	app.get('/activity', isLoggedIn, function(req, res) {
+		todoActivity.find({'activity.u_id' : req.user._id, 'activity.completed' : false}).exec( function (err, tasks) {
+			if (err) return next(error);
+			res.render( 'mainActivity.ejs', {
+				user : req.user,
+				message : req.flash('signupMessage'),
+				tasks: tasks || []
+			});
+		// console.log(tasks);
+		});
+	});
+
+	app.get('/completed', isLoggedIn, function(req, res) {
+		todoActivity.find({'activity.u_id' : req.user._id, 'activity.completed' : true}).exec( function (err, tasks) {
+			if (err) return next(error);
+			res.render( 'completed.ejs', {
+				user : req.user,
+				message : req.flash('signupMessage'),
+				tasks: tasks || []
+			});
+		// console.log(tasks);
+		});
+	});
+
+	app.get('/actWindow', isLoggedIn, function(req, res) {
+		todoActivity.find({'activity.u_id' : req.user._id, 'activity.completed' : false}).exec( function (err, tasks) {
+			if (err) return next(error);
+			res.render( 'activity.ejs', {
+				user : req.user,
+				message : req.flash('signupMessage'),
+				tasks: tasks || []
+			});
 		})
 	});
+
+	app.post('/activity', isLoggedIn, function (req, res) {
+		if (!req.body || !req.body.name) return next( new Error( 'No data provided'));
+		user.findOne( {'_id' : req.user._id},  function( err, docs) {
+			if (err) {
+				console.log(err);
+				res.status(500).send();
+			} else {
+				var newTodo = new todoActivity();
+
+				// set the user's local credentials
+				newTodo.activity.name = req.body.name;
+				newTodo.activity.createTime = new Date();
+				newTodo.activity.completed = false;
+				newTodo.activity.u_id = req.user._id;
+
+				// save the user
+				newTodo.save( function(err) {
+					if (err)
+						throw err;
+					res.redirect('/actWindow');
+				});
+			}
+		});
+	});
+
+	app.post('/del/:task_id', isLoggedIn, function (req, res) {
+		todoActivity.findByIdAndRemove( req.params.task_id, function (err, count) {
+			console.log(req.params.task_id);
+			if (err) return next(err);
+			// res.status(204).send();
+			res.redirect('/actWindow');
+		});
+	});
+
+	app.post('/done/:task_id', isLoggedIn, function (req, res, next) {
+		if (!req.body.completed) return next(new Error('Param is missing'));
+		var completed = req.body.completed;
+		todoActivity.findByIdAndUpdate( req.params.task_id, {
+			$set : {
+				'activity.completeTime' : completed ? new Date() : null,
+				'activity.completed' : completed
+			}
+		}, function (err, count) {
+			if (err) return next(err);
+			res.redirect('/actWindow');
+		});
+	})
 };
 
 

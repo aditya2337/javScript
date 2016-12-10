@@ -1,0 +1,17 @@
+
+<!-- INFORMATION -->
+<div class="col-sm-12 tab-pane fade in active">
+  <div >
+    <h3><span class ="fa fa-user"></span> Activity</h3>
+    <div class="col-xs-2" id = 'lis'> <!-- required for floating -->
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs tabs-left"><!-- 'tabs-right' for right tabs -->
+        <li id = "todo-list" class="active"><a href="#todo" data-toggle="tab" onclick = "showActivity('todo-list')">Todo List</a></li>
+        <li id = "todo-completed"><a href="#todo-completed" data-toggle="tab" onclick = "showCompleted('todo-completed')">Completed</a></li>
+      </ul>
+    </div>
+    <div  id="activityTabs">
+    <% include activity %>
+  </div>
+  </div>
+</div>
